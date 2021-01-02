@@ -7,6 +7,7 @@ import random
 class array():
     def __init__(self):
         self.foilnum = int(input("How many foils? (5/9/15)\n"))
+        self.usedfoils = []
         self.row = 2
         if self.foilnum == 5:
             self.col = 3
@@ -14,7 +15,7 @@ class array():
             self.col = 5
         elif self.foilnum == 15:
             self.col = 8
-        # self.arraynum = int(input("How many arrays for this foil number?\n"))
+        self.arraynum = int(input("How many arrays for this foil number?\n"))
         self.impath = "C:\\Users\\haoze\\Desktop\\Images for experiment\\"
         self.target = random.randint(1, 200)
         self.targetpath = self.impath + str(self.target) + ".png"
@@ -22,10 +23,16 @@ class array():
         self.imwidth = 512
         self.resultname = "Array" + str(self.foilnum) + ".png"
 
-    def getimnames(self):   
-        imlist = []
+    def get_foils(self):
+        foils = []
         for j in range(self.foilnum):
-            imlist.append(str(random.choice([i for i in range(1, 201) if i not in [self.target]])))
+            foils.append(str(random.choice([i for i in range(1, 201) if i not in [self.target]+self.usedfoils])))
+        for i in foils:
+            self.usedfoils.append(int(i))
+        return foils
+
+    def list_image_names(self):   
+        imlist = self.get_foils()
         tarindex = random.randint(0, self.foilnum + 1)
         imlist.insert(tarindex, str(self.target))
         return imlist
@@ -37,7 +44,7 @@ class array():
         return p
 
     def image_compose(self, resultname):
-        image_names = self.getimnames()
+        image_names = self.list_image_names()
         to_image = Image.new('RGB', (self.col * self.imwidth, self.row * self.imheight), "white")
         for y in range(1, self.row + 1):
             for x in range(1, self.col + 1):
@@ -46,10 +53,9 @@ class array():
                 to_image.paste(self.change_bg(from_image), ((x - 1) * self.imwidth, (y - 1) * self.imheight))
         return to_image.save(resultname)
 
-def main():
-    a = array()
-    arraynum = int(input("How many arrays needed?\n"))
-    for n in range(arraynum):
-        a.image_compose(str(n+1) + ".png")
+    def repeat_compose(self):
+        for n in range(self.arraynum):
+            a.image_compose(str(n+1) + ".png")
 
-main()
+a = array()
+a.repeat_compose()
