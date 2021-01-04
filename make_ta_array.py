@@ -2,16 +2,14 @@ import PIL.Image as Image
 import random
 import numpy as np
 
-class TParray():
-    def __init__(self, foilnum, arraynum, target, impath):
+class TAarray():
+    def __init__(self, foilnum, arraynum, impath):
         self.foilnum = foilnum
         self.usedfoils = []
         self.row = 2
         self.col = 8
         self.arraynum = arraynum
         self.impath = impath
-        self.target = target
-        self.targetpath = self.impath + str(self.target) + ".png"
         self.imheight = 1200
         self.imwidth = 512
 
@@ -22,15 +20,13 @@ class TParray():
     def get_foils(self):
         foils = []
         for j in range(self.foilnum):
-            foil = random.choice([i for i in range(1, 201) if i not in [self.target]+self.usedfoils])
+            foil = random.choice([i for i in range(1, 201) if i not in self.usedfoils])
             self.usedfoils.append(foil)
             foils.append(str(foil))
         return foils
 
     def list_image_names(self):   
         imlist = self.get_foils()
-        tarindex = random.randint(0, self.foilnum + 1)
-        imlist.insert(tarindex, str(self.target))
         if len(imlist) != 16:
             whitenum = 16 - len(imlist)
             lst = np.random.randint(16, size=whitenum).tolist()
@@ -62,4 +58,4 @@ class TParray():
 
     def repeat_compose(self):
         for n in range(self.arraynum):
-            self.image_compose("Target" + str(self.target) + "_" + str(n+1) + ".png")
+            self.image_compose("TA " + str(n+1) + ".png")

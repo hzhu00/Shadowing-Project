@@ -27,9 +27,11 @@ def main():
     Continue = True
     while Continue:
         v = visualAngle()
+        a = v. calc_angle()
         h = v.calc_height_on_screen()
         ppi = v.calc_ppi()
         r = v.calc_resolution_on_screen()
+        print("Visual Angle is " + str(a))
         print("The image is %f-meter-high on the screen." % (h))
         print("The PPI of your screen is %f." % (ppi))
         print("The resolution of the image on screen (height) is %f." % (r))
